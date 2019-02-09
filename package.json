@@ -1,5 +1,5 @@
 {
-  "name": "comp308-w2019-lesson4b",
+  "name": "comp308-w2019-lesson5b",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -22,7 +22,7 @@
     "morgan": "~1.9.0",
     "popper.js": "^1.14.6"
   },
-  "description": "Mongo and Mongoose Demo",
+  "description": "Lesson5B-Mongo and Mongoose Demo",
   "main": "server.js",
   "author": "Bishnu Khanal",
   "license": "ISC",
