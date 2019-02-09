@@ -1,21 +1,17 @@
 let express = require("express");
 let router = express.Router();
-//also requre mongoose
 let mongoose = require("mongoose");
 
-//create a reference to the database schema (which is in in models)
-//for this we need models folder //make models folder
+// create a reference to the db schema
+let contactModel = require("../models/contact");
 
-let contactModel = require("../models/contact"); //reference to contact.js file in models folder
-
-//now we need to use the router
-/*Get Contact List Page - read operation */
+/* GET Contact List page - READ Operation */
 router.get("/", (req, res, next) => {
   contactModel.find((err, contactList) => {
     if (err) {
       return console.error(err);
     } else {
-      //console.log(contactList);
+      // console.log(contactList);
 
       res.render("contacts/index", {
         title: "Contact List",
@@ -24,28 +20,72 @@ router.get("/", (req, res, next) => {
     }
   });
 });
-//get route for the add page/ this willl display the add page
+
+/* GET Route for the Add page 
+   this will display the Add page */
 router.get("/add", (req, res, next) => {
   res.render("contacts/add", {
     title: "Add New Contact"
   });
 });
-//post route
-router.post("/add", (req, res, next) => {
-  //console.log(req.body);
 
+/* POST Route for processing the Add page */
+router.post("/add", (req, res, next) => {
   let newContact = contactModel({
     firstName: req.body.firstName,
-    lastName: req.body.lastName
+    lastName: req.body.lastName,
+    age: req.body.age
   });
+
   contactModel.create(newContact, (err, contactModel) => {
     if (err) {
       console.log(err);
       res.end(err);
     } else {
-      //refersh contact list
-      res.redirect("contact-list");
+      // refresh the contact list
+      res.redirect("/contact-list");
     }
   });
 });
+
+/* GET request - display the Edit page */
+router.get("/edit/:id", (req, res, next) => {
+  let id = req.params.id;
+
+  contactModel.findById(id, (err, contactObject) => {
+    if (err) {
+      console.log(err);
+      res.end(err);
+    } else {
+      // show the edit view
+      res.render("contacts/edit", {
+        title: "Edit Contact",
+        contact: contactObject
+      });
+    }
+  });
+});
+
+/* POST request - Update the database with data from the Edit Page */
+router.post("/edit/:id", (req, res, next) => {
+  let id = req.params.id;
+
+  let updatedContact = contactModel({
+    _id: id,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    age: req.body.age
+  });
+
+  contactModel.update({ _id: id }, updatedContact, err => {
+    if (err) {
+      console.log(err);
+      res.end(err);
+    } else {
+      // refresh the contact list
+      res.redirect("/contact-list");
+    }
+  });
+});
+
 module.exports = router;
