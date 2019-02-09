@@ -6,5 +6,5 @@ module.exports = {
 
   //to publish in mLab
   URI:
-    "mongodb://Bikalpa:Bikalpa@22@ds044989.mlab.com:44989/comp308-w2019-lesson4"
+    "mongodb ://Bikalpa:Bikalpa@22@ds044989.mlab.com:44989/comp308-w2019-lesson4"
 };
